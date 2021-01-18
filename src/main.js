@@ -14,15 +14,22 @@ const mock =false;
 if(mock){
   require('./mock/api');
 }
-Vue.config.productionTip = false
+// 引入cookie插件
 Vue.use(VueCookie);
+// 引入图片懒加载插件
 Vue.use(VueLazyLoad,{
   loading:'/imgs/loading-svg/loading-bars.svg'
 })
+// 引入Message插件
+Vue.prototype.$message = Message;
+// 阻止启动生产消息
+Vue.config.productionTip = false
+// 引入VueAxios插件
 Vue.use(VueAxios,axios);
-// 接口错误拦截
+// 配置axios
 axios.defaults.baseURL = '/api';
 axios.defaults.timeout = 8000;
+// 接口拦截
 axios.interceptors.response.use((response)=>{
   let res = response.data;
   let path =location.hash;
@@ -33,9 +40,13 @@ axios.interceptors.response.use((response)=>{
     if(path !='#/index')
     window.location.href = '/#/login'
   }else{
-    alert(res.msg);
+    Message.warning(res.msg);
     return Promise.reject(res);
   }
+},(error)=>{
+  let res = error.response;
+  Message.error(res.data.message);
+  return Promise.reject(error);
 })
 
 new Vue({

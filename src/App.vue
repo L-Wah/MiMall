@@ -14,10 +14,20 @@ export default {
   },
   methods: {
     getUser() {
-      this.axios.get("/user").then((res) => {});
+      this.axios.get("/user").then((res) => {
+        console.log(res)
+        if(res!=undefined){
+          this.$store.dispatch('saveUserName',res.username)
+        }
+      });
     },
     getCartCount() {
-      this.axios.get("/carts/products/sum").then((res) => {});
+      this.axios.get("/carts/products/sum").then((res) => {
+        console.log(res)
+        if(res!=undefined){
+          this.$store.dispatch('saveCartCount',res)
+        }
+      });
     },
   },
   mounted() {
