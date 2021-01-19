@@ -1,9 +1,9 @@
 <template>
   <div class="detail">
     <product-param :title="product.name">
-      <template v-slot:buy>
+      <!-- <template v-slot:buy>
         <button class="btn" >立即购买</button>
-      </template>
+      </template> -->
     </product-param>
     <div class="wrapper">
       <div class="container clearfix">
@@ -127,6 +127,7 @@ export default {
     };
   },
   mounted() {
+    window.scroll(0, 0)
     this.getProductInfo();
   },
   methods: {
@@ -142,6 +143,9 @@ export default {
           productId: this.id,
           selected: true,
         })
+        // .then((res)=>{
+        //   console.log(res)
+        // })
         .then((res = { cartProductVoList: 0 }) => {
           this.$store.dispatch("saveCartCount", res.cartTotalQuantity);
           // this.$router.push('/cart');

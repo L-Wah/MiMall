@@ -78,7 +78,7 @@
                   <div class="item-info">
                     <h3>{{ item.name }}</h3>
                     <p>{{ item.subtitle }}</p>
-                    <p class="price" @click="addcart(item.id)">{{ item.price }}元</p>
+                    <p class="price" @click.prevent="addcart(item.id)">{{ item.price }}元</p>
                   </div>
                 </a>
               </div>
@@ -238,7 +238,7 @@ export default {
         });
     },
     addcart(id) {
-      this.showModal = true;
+      // this.showModal = true;
       this.axios
         .post("/carts", {
           productId: id,

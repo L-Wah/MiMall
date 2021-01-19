@@ -7,7 +7,7 @@
       <div class="pro-param">
         <a href="javascript:;">概述<span>|</span></a>
         <a href="javascript:;">参数<span>|</span></a>
-        <a href="javascript:;">用户评价<span>|</span></a>
+        <a href="javascript:;">用户评价</a>
         <slot name="buy"></slot>
       </div>
     </div>

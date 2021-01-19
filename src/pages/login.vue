@@ -80,7 +80,7 @@ export default {
           email: "admin1@163.com",
         })
         .then(() => {
-          alert("注册成功");
+          this.$message.success("注册成功");
         });
     },
   },
