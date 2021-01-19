@@ -59,7 +59,8 @@
           <div class="overlay"></div>
           <div class="video" :class="showSlide">
             <span class="icon-close" @click="closeVideo"></span>
-            <video ref="video"
+            <video
+              ref="video"
               src="/imgs/product/video.mp4"
               controls="controls"
             ></video>
@@ -99,6 +100,7 @@ export default {
     };
   },
   mounted() {
+    window.scroll(0, 0)
     this.getProductInfo();
   },
   methods: {
@@ -113,16 +115,16 @@ export default {
       let id = this.$route.params.id;
       this.$router.push(`/detail/${id}`);
     },
-    play(){
-      this.showSlide = 'slideDown';
+    play() {
+      this.showSlide = "slideDown";
       this.$refs.video.load();
       this.$refs.video.play();
-      console.log("play")
+      console.log("play");
     },
     closeVideo() {
       this.showSlide = "slideUp";
       this.$refs.video.pause();
-      console.log("stop")
+      console.log("stop");
       setTimeout(() => {
         this.showSlide = "";
       }, 600);
@@ -248,7 +250,7 @@ export default {
           opacity: 0;
           &.slideDown {
             animation: slideDown 0.6s linear;
-            animation-fill-mode:forwards
+            animation-fill-mode: forwards;
           }
           &.slideUp {
             animation: slideUp 0.6s linear;
