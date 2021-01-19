@@ -10,10 +10,7 @@
                 <ul v-for="(item, i) in menuList" v-bind:key="i">
                   <li v-for="(sub, j) in item" v-bind:key="j">
                     <a v-bind:href="sub ? '/#/product/' + sub.id : ''">
-                      <img
-                        v-bind:src="sub ? sub.img : '/imgs/item-box-1.png'"
-                        alt=""
-                      />
+                      <img v-bind:src="sub ? sub.img : '/imgs/item-box-1.png'" alt="" />
                       {{ sub ? sub.name : "小米9" }}
                     </a>
                   </li>
@@ -53,11 +50,7 @@
         </swiper>
       </div>
       <div class="ads-box">
-        <a
-          :href="'/#/product/' + item.id"
-          v-for="(item, index) in adsList"
-          :key="index"
-        >
+        <a :href="'/#/product/' + item.id" v-for="(item, index) in adsList" :key="index">
           <img v-lazy="item.img" />
         </a>
       </div>
@@ -85,9 +78,7 @@
                   <div class="item-info">
                     <h3>{{ item.name }}</h3>
                     <p>{{ item.subtitle }}</p>
-                    <p class="price" @click="addcart(item.id)">
-                      {{ item.price }}元
-                    </p>
+                    <p class="price" @click="addcart(item.id)">{{ item.price }}元</p>
                   </div>
                 </a>
               </div>
@@ -221,9 +212,18 @@ export default {
     };
   },
   mounted() {
+    this.getCartCount();
     this.init();
   },
   methods: {
+    getCartCount() {
+      this.axios.get("/carts/products/sum").then((res) => {
+        console.log(res);
+        if (res != undefined) {
+          this.$store.dispatch("saveCartCount", res);
+        }
+      });
+    },
     init() {
       this.axios
         .get("/products", {
