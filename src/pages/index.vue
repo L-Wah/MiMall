@@ -78,7 +78,9 @@
                   <div class="item-info">
                     <h3>{{ item.name }}</h3>
                     <p>{{ item.subtitle }}</p>
-                    <p class="price" @click.prevent="addcart(item.id)">{{ item.price }}元</p>
+                    <p class="price" @click.prevent="addcart(item.id)">
+                      {{ item.price }}元
+                    </p>
                   </div>
                 </a>
               </div>
@@ -212,18 +214,9 @@ export default {
     };
   },
   mounted() {
-    this.getCartCount();
     this.init();
   },
   methods: {
-    getCartCount() {
-      this.axios.get("/carts/products/sum").then((res) => {
-        console.log(res);
-        if (res != undefined) {
-          this.$store.dispatch("saveCartCount", res);
-        }
-      });
-    },
     init() {
       this.axios
         .get("/products", {
