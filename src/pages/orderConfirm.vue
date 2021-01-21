@@ -169,26 +169,39 @@
               class="input"
               placeholder="手机号"
               v-model="checkedItem.receiverMobile"
+              maxlength="11"
             />
           </div>
           <div class="item">
             <select name="province" v-model="checkedItem.receiverProvince">
-              <option value="北京">北京</option>
-              <option value="天津">天津</option>
-              <option value="河北">河北</option>
+              <option value="" disabled selected>Select your province</option>
+              <option
+                v-for="(item, index) in address"
+                :key="index"
+                :value="item.name"
+              >
+                {{ item.name }}
+              </option>
             </select>
             <select name="city" v-model="checkedItem.receiverCity">
-              <option value="北京">北京</option>
-              <option value="天津">天津</option>
-              <option value="河北">石家庄</option>
+              <option value="" disabled selected>Select your city</option>
+              <option
+                v-for="(item, index) in city"
+                :key="index"
+                :value="item.name"
+              >
+                {{ item.name }}
+              </option>
             </select>
             <select name="district" v-model="checkedItem.receiverDistrict">
-              <option value="北京">昌平区</option>
-              <option value="天津">海淀区</option>
-              <option value="河北">东城区</option>
-              <option value="天津">西城区</option>
-              <option value="河北">顺义区</option>
-              <option value="天津">房山区</option>
+              <option value="" disabled selected>Select your district</option>
+              <option
+                v-for="(item, index) in district"
+                :key="index"
+                :value="item.name"
+              >
+                {{ item.name }}
+              </option>
             </select>
           </div>
           <div class="item">
@@ -223,6 +236,7 @@
 </template>
 <script>
 import Modal from "../components/Modal.vue";
+import address from "../util/address.js";
 export default {
   name: "order-confirm",
   components: {
@@ -237,9 +251,35 @@ export default {
       receiverName: "",
       showEditModal: false,
       showDelModal: false,
+      checkIndex: 0,
+      userAction: "",
+      checkedItem: {},
+      address: address,
+      city: "",
+      district:"",
     };
   },
+  watch: {
+    "checkedItem.receiverProvince": function (val) {
+      console.log(val);
+      this.address.forEach((item) => {
+        if (item.name == val) {
+          this.city = item.children;
+        }
+      });
+      this.district =''
+    },
+    "checkedItem.receiverCity": function (val) {
+      console.log(val);
+      this.city.forEach((item) => {
+        if (item.name == val) {
+          this.district = item.children;
+        }
+      });
+    },
+  },
   mounted() {
+    console.log(this.address);
     this.getAddressList();
     this.getCartList();
   },
@@ -260,12 +300,104 @@ export default {
         });
       });
     },
-    delAddress() {},
-    editAddressModal() {},
-    orderSubmit() {},
-    submitAddress() {},
-    openAddressModal() {},
-    checkedItem() {},
+    openAddressModal() {
+      this.showEditModal = true;
+      this.userAction = 0;
+      this.checkedItem = {};
+    },
+    delAddress(item) {
+      this.checkedItem = item;
+      this.userAction = 2;
+      this.showDelModal = true;
+    },
+    editAddressModal(item) {
+      this.userAction = 1;
+      this.checkedItem = item;
+      this.showEditModal = true;
+    },
+    submitAddress() {
+      let { checkedItem, userAction } = this;
+      let method,
+        url,
+        params = {};
+      if (userAction == 0) {
+        (method = "post"), (url = "/shippings");
+      } else if (userAction == 1) {
+        (method = "put"), (url = `/shippings/${checkedItem.id}`);
+      } else {
+        (method = "delete"), (url = `/shippings/${checkedItem.id}`);
+      }
+      if (userAction == 0 || userAction == 1) {
+        console.log("进入正则");
+        let {
+          receiverName,
+          receiverMobile,
+          receiverProvince,
+          receiverCity,
+          receiverDistrict,
+          receiverAddress,
+          receiverZip,
+        } = checkedItem;
+        let errMsg = "";
+        if (!receiverName) {
+          errMsg = "请输入收货人名称";
+        } else if (!receiverMobile || !/\d{11}/.test(receiverMobile)) {
+          errMsg = "请输入正确格式的手机号";
+        } else if (!receiverProvince) {
+          errMsg = "请选择省份";
+        } else if (!receiverCity) {
+          errMsg = "请选择对应的城市";
+        } else if (!receiverAddress || !receiverDistrict) {
+          errMsg = "请输入收货地址";
+        } else if (!/^\d{6}$/.test(receiverZip)) {
+          console.log("错误捕获");
+          errMsg = "请输入六位邮编";
+        }
+        if (errMsg) {
+          this.$message.error(errMsg);
+          return;
+        }
+        params = {
+          receiverName,
+          receiverMobile,
+          receiverProvince,
+          receiverCity,
+          receiverDistrict,
+          receiverAddress,
+          receiverZip,
+        };
+      }
+      this.axios[method](url, params).then(() => {
+        this.closeModal();
+        this.getAddressList();
+        this.$message.success("操作成功");
+      });
+    },
+    closeModal() {
+      this.checkedItem = {};
+      this.userAction = "";
+      this.showDelModal = false;
+      this.showEditModal = false;
+    },
+    orderSubmit() {
+      let item = this.list[this.checkIndex];
+      if (!item) {
+        this.$message.error("请选择一个收货地址");
+        return;
+      }
+      this.axios
+        .post("/orders", {
+          shippingId: item.id,
+        })
+        .then((res) => {
+          this.$router.push({
+            path: "/order/pay",
+            query: {
+              orderNo: res.orderNo,
+            },
+          });
+        });
+    },
   },
 };
 </script>
