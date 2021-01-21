@@ -174,7 +174,7 @@
           </div>
           <div class="item">
             <select name="province" v-model="checkedItem.receiverProvince">
-              <option value="" disabled selected>Select your province</option>
+              <option disabled selected>Select your province</option>
               <option
                 v-for="(item, index) in address"
                 :key="index"
@@ -184,7 +184,7 @@
               </option>
             </select>
             <select name="city" v-model="checkedItem.receiverCity">
-              <option value="" disabled selected>Select your city</option>
+              <option disabled selected>Select your city</option>
               <option
                 v-for="(item, index) in city"
                 :key="index"
@@ -194,7 +194,7 @@
               </option>
             </select>
             <select name="district" v-model="checkedItem.receiverDistrict">
-              <option value="" disabled selected>Select your district</option>
+              <option disabled selected>Select your district</option>
               <option
                 v-for="(item, index) in district"
                 :key="index"
@@ -256,26 +256,65 @@ export default {
       checkedItem: {},
       address: address,
       city: "",
-      district:"",
+      district: "",
     };
   },
   watch: {
     "checkedItem.receiverProvince": function (val) {
       console.log(val);
-      this.address.forEach((item) => {
-        if (item.name == val) {
-          this.city = item.children;
-        }
-      });
-      this.district =''
+      if (val) {
+        this.address.forEach((item) => {
+          if (item.name == val) {
+            this.city = item.children;
+          }
+        });
+      }
     },
     "checkedItem.receiverCity": function (val) {
       console.log(val);
-      this.city.forEach((item) => {
-        if (item.name == val) {
-          this.district = item.children;
-        }
-      });
+      if (val) {
+        this.city.forEach((item) => {
+          if (item.name == val) {
+            this.district = item.children;
+          }
+        });
+      }
+      // 反查练手
+      // if (!this.checkedItem.receiverProvince && this.checkedItem.receiverCity ) {
+      //   console.log(this.city);
+      //   this.address.forEach((item) => {
+      //     if (item.code == this.city[0].code.substring(0, 2)) {
+      //       console.log(item.name);
+      //     }
+      //   });
+      // }
+    },
+    "checkedItem.receiverDistrict": function (val) {
+      // console.log(this.district);
+      // 反查练手
+      // console.log(val);
+      // if (
+      //   !this.checkedItem.receiverProvince && !this.checkedItem.receiverCity && this.checkedItem.receiverDistrict
+      // ) {
+      //   this.district.forEach((item) => {
+      //     if (item.name == val) {
+      //       let code = item.code;
+      //       console.log(code);
+      //       let p = code.substring(0, 2);
+      //       let c = code.substring(0, 4);
+      //       this.address.forEach((item) => {
+      //         if (item.code == p) {
+      //           console.log(item.name)
+      //           item.children.forEach((i) => {
+      //             if (i.code == c) {
+      //               console.log(i.name)
+      //             }
+      //           });
+      //         }
+      //       });
+      //     }
+      //   });
+      // }
     },
   },
   mounted() {
@@ -304,6 +343,8 @@ export default {
       this.showEditModal = true;
       this.userAction = 0;
       this.checkedItem = {};
+      this.city = "";
+      this.district = "";
     },
     delAddress(item) {
       this.checkedItem = item;

@@ -80,9 +80,9 @@ export default {
       let { username, password } = this;
       this.axios
         .post("/user/register", {
-          admin: "admin1",
-          password: "admin1",
-          email: "admin1@163.com",
+          username: "admin_",
+          password: "admin_",
+          email: "admin_@163.com",
         })
         .then(() => {
           this.$message.success("注册成功");
