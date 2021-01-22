@@ -122,7 +122,36 @@ export default {
     getOrderDetail() {
       this.axios.get(`/orders/${this.orderId}`).then((res) => {
         console.log(res);
+        // 收货信息
+        let item = res.shippingVo;
+        this.addressInfo = `${item.receiverName} ${item.receiverMobile} ${item.receiverProvince} ${item.receiverCity} ${item.receiverDistrict} ${item.receiverAddress}`;
+        // 订单详情
+        this.orderDetail = res.orderItemVoList;
+        // 订单总价
+        this.payment = res.payment;
       });
+    },
+    paySubmit(payType){
+      if(payType == 1){
+        window.open('/#/order/alipay?orderId='+this.orderId,'_blank');
+      }else{
+        // this.axios.post('/pay',{
+        //   orderId:this.orderId,
+        //   orderName:'Vue高仿小米商城',
+        //   amount:0.01,//单位元
+        //   payType:2 //1支付宝，2微信
+        // }).then((res)=>{
+        //   QRCode.toDataURL(res.content)
+        //   .then(url => {
+        //     this.showPay = true;
+        //     this.payImg = url;
+        //     this.loopOrderState();
+        //   })
+        //   .catch(() => {
+        //     this.$message.error('微信二维码生成失败，请稍后重试');
+        //   })
+        // })
+      }
     },
   },
 };
