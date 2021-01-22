@@ -34,9 +34,7 @@
               </div>
               <div class="item-name">
                 <img v-lazy="item.productMainImage" alt="" />
-                <span>{{
-                  item.productName + " , " + item.productSubtitle
-                }}</span>
+                <span>{{ item.productName + " , " + item.productSubtitle }}</span>
               </div>
               <div class="item-price">{{ item.productPrice }}</div>
               <div class="item-num">
@@ -71,6 +69,7 @@
   </div>
 </template>
 <script>
+import api from "../api/index";
 import OrderHeader from "../components/OrderHeader.vue";
 import NavFooter from "../components/NavFooter.vue";
 import ServiceBar from "../components/ServiceBar.vue";
@@ -90,12 +89,12 @@ export default {
     };
   },
   mounted() {
-    window.scroll(0, 0)
+    window.scroll(0, 0);
     this.getCartList();
   },
   methods: {
     getCartList() {
-      this.axios.get("/carts").then((res) => {
+      this.axios.get(api.cart).then((res) => {
         // console.log(res)
         this.renderData(res);
       });
@@ -120,7 +119,7 @@ export default {
         selected = !item.productSelected;
       }
       this.axios
-        .put(`/carts/${item.productId}`, {
+        .put(`${api.cart}/${item.productId}`, {
           quantity,
           selected,
         })
@@ -269,7 +268,7 @@ export default {
       margin-top: 20px;
       height: 50px;
       line-height: 50px;
-      .cart-tip {              
+      .cart-tip {
         margin-left: 29px;
         a {
           color: #666666;

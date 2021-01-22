@@ -5,6 +5,7 @@
   </div>
 </template>
 <script>
+import api from "../api/index";
 import Loading from "./../components/Loading";
 export default {
   name: "ali-pay",
@@ -15,7 +16,7 @@ export default {
     return {
       orderId: this.$route.query.orderId,
       content: "",
-      loading:true,
+      loading: true,
     };
   },
   mounted() {
@@ -24,7 +25,7 @@ export default {
   methods: {
     paySubmit() {
       this.axios
-        .post("/pay", {
+        .post(api.pay, {
           orderId: this.orderId,
           orderName: "Vue高仿小米商城",
           amount: 0.01,
@@ -32,9 +33,9 @@ export default {
         })
         .then((res) => {
           this.content = res.content;
-          setTimeout(()=>{
+          setTimeout(() => {
             document.forms[0].submit();
-          },100)
+          }, 100);
         });
     },
   },
