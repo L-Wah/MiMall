@@ -1,5 +1,10 @@
 <template>
   <div class="order-confirm">
+    <order-header title="订单确认">
+      <template v-slot:tip>
+        <span>请谨防钓鱼链接或诈骗电话，了解更多</span>
+      </template>
+    </order-header>
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
@@ -237,9 +242,11 @@
 <script>
 import Modal from "../components/Modal.vue";
 import address from "../util/address.js";
+import OrderHeader from './../components/OrderHeader'
 export default {
   name: "order-confirm",
   components: {
+    OrderHeader,
     Modal,
   },
   data() {
@@ -318,6 +325,7 @@ export default {
     },
   },
   mounted() {
+    window.scrollTo(0,0)
     console.log(this.address);
     this.getAddressList();
     this.getCartList();
@@ -441,7 +449,6 @@ export default {
     },
   },
 };
-</script>
 </script>
 <style lang="scss">
 .order-confirm {
