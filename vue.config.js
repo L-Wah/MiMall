@@ -22,6 +22,7 @@ module.exports = {
   // lintOnSave:false,
   // 减少包大小且加密
   productionSourceMap:false,
+  // 彻底懒加载
   chainWebpack:(config)=>{
     config.plugins.delete('prefetch');
   }
