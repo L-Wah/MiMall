@@ -1,4 +1,5 @@
 <template>
+<!-- vue自身的动画效果 -->
   <transition name="slide">
     <div class="modal" v-show="showModal">
       <div class="mask" @touchmove.prevent @mousewheel.prevent></div>
