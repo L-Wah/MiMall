@@ -90,6 +90,7 @@
   </div>
 </template>
 <script>
+import api from "../api/index";
 import OrderHeader from "./../components/OrderHeader";
 import Loading from "./../components/Loading";
 import NoData from "./../components/NoData";
@@ -130,7 +131,7 @@ export default {
       this.loading = true;
       this.busy = true;
       this.axios
-        .get("/orders", {
+        .get(api.orders, {
           params: {
             pageSize: 5,
             pageNum: this.pageNum,
@@ -186,7 +187,7 @@ export default {
     getList() {
       this.loading = true;
       this.axios
-        .get("/orders", {
+        .get(api.orders, {
           params: {
             pageSize: 5,
             pageNum: this.pageNum,

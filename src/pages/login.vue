@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import api from "../api/index";
 export default {
   name: "login",
   data() {
@@ -59,7 +59,7 @@ export default {
       // 解构语法：
       let { username, password } = this;
       this.axios
-        .post("/user/login", {
+        .post(api.login, {
           username,
           password,
         })
@@ -79,7 +79,7 @@ export default {
       // 解构语法：
       let { username, password } = this;
       this.axios
-        .post("/user/register", {
+        .post(api.register, {
           username: "admin_",
           password: "admin_",
           email: "admin_@163.com",

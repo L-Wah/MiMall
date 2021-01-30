@@ -7,6 +7,7 @@
 @import "./assets/scss/reset.scss";
 </style>
 <script>
+import api from "./api/index";
 export default {
   name: "app",
   data() {
@@ -14,7 +15,7 @@ export default {
   },
   methods: {
     getUser() {
-      this.axios.get("/user").then((res) => {
+      this.axios.get(api.user).then((res) => {
         console.log(res);
         if (res != undefined) {
           this.$store.dispatch("saveUserName", res.username);
@@ -22,7 +23,7 @@ export default {
       });
     },
     getCartCount() {
-      this.axios.get("/carts/products/sum").then((res) => {
+      this.axios.get(api.count).then((res) => {
         console.log(res);
         if (res != undefined) {
           this.$store.dispatch("saveCartCount", res);

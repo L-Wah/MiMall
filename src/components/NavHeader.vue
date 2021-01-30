@@ -62,6 +62,7 @@
   </div>
 </template>
 <script>
+import api from "../api/index";
 import { mapState } from "vuex";
 export default {
   name: "nav-header",
@@ -100,7 +101,7 @@ export default {
     },
     getProductList() {
       this.axios
-        .get("/products", {
+        .get(api.products, {
           params: {
             categoryId: "100012",
             pageSize: 6,
@@ -111,12 +112,12 @@ export default {
         });
     },
     getCartCount() {
-      this.axios.get("/carts/products/sum").then((res = 0) => {
+      this.axios.get(api.count).then((res = 0) => {
         this.$store.dispatch("saveCartCount", res);
       });
     },
     logout() {
-      this.axios.post("/user/logout").then(() => {
+      this.axios.post(api.logout).then(() => {
         this.$message.success("退出成功");
         // this.$cookie.set('userId','',{expires:'-1'});
         this.$cookie.delete("userId");

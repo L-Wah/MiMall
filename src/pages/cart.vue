@@ -128,13 +128,13 @@ export default {
         });
     },
     delProduct(item) {
-      this.axios.delete(`/carts/${item.productId}`).then((res) => {
+      this.axios.delete(`${api.cart}/${item.productId}`).then((res) => {
         this.$message.success("删除成功");
         this.renderData(res);
       });
     },
     toggleAll() {
-      let url = this.allChecked ? "/carts/unSelectAll" : "/carts/selectAll";
+      let url = this.allChecked ? `${api.cart}/unSelectAll` : `${api.cart}/selectAll`;
       this.axios.put(url).then((res) => {
         // console.log(res)
         this.renderData(res);

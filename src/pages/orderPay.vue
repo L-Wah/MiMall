@@ -72,11 +72,7 @@
         </div>
       </div>
     </div>
-    <scan-pay-code
-      v-if="showPay"
-      @close="closePayModal"
-      :img="payImg"
-    ></scan-pay-code>
+    <scan-pay-code v-if="showPay" @close="closePayModal" :img="payImg"></scan-pay-code>
     <modal
       title="支付确认"
       btnType="3"
@@ -93,10 +89,11 @@
   </div>
 </template>
 <script>
+import api from "../api/index";
 import QRCode from "qrcode";
 import ScanPayCode from "./../components/ScanPayCode";
 import Modal from "./../components/Modal";
-import OrderHeader from './../components/OrderHeader'
+import OrderHeader from "./../components/OrderHeader";
 export default {
   name: "order-pay",
   components: {
@@ -127,7 +124,7 @@ export default {
       this.$router.push("/order/list");
     },
     getOrderDetail() {
-      this.axios.get(`/orders/${this.orderId}`).then((res) => {
+      this.axios.get(`${api.orders}/${this.orderId}`).then((res) => {
         console.log(res);
         // 收货信息
         let item = res.shippingVo;
@@ -143,7 +140,7 @@ export default {
         window.open("/#/order/alipay?orderId=" + this.orderId, "_blank");
       } else {
         this.axios
-          .post("/pay", {
+          .post(api.pay, {
             orderId: this.orderId,
             orderName: "Vue高仿小米商城",
             amount: 0.01, //单位元
@@ -172,7 +169,7 @@ export default {
     // 轮询当前订单支付状态
     loopOrderState() {
       this.T = setInterval(() => {
-        this.axios.get(`/orders/${this.orderId}`).then((res) => {
+        this.axios.get(`${api.orders}/${this.orderId}`).then((res) => {
           if (res.status == 20) {
             clearInterval(this.T);
             this.goOrderList();

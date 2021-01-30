@@ -79,11 +79,7 @@
                       <use xlink:href="#icon-del"></use>
                     </svg>
                   </a>
-                  <a
-                    href="javascript:;"
-                    class="fr"
-                    @click="editAddressModal(item)"
-                  >
+                  <a href="javascript:;" class="fr" @click="editAddressModal(item)">
                     <svg class="icon icon-edit">
                       <use xlink:href="#icon-edit"></use>
                     </svg>
@@ -102,9 +98,7 @@
               <li v-for="(item, index) in cartList" :key="index">
                 <div class="good-name">
                   <img v-lazy="item.productMainImage" alt="" />
-                  <span>{{
-                    item.productName + " " + item.productSubtitle
-                  }}</span>
+                  <span>{{ item.productName + " " + item.productSubtitle }}</span>
                 </div>
                 <div class="good-price">
                   {{ item.productPrice }}元x{{ item.quantity }}
@@ -146,9 +140,7 @@
           </div>
           <div class="btn-group">
             <a href="/#/cart" class="btn btn-default btn-large">返回购物车</a>
-            <a href="javascript:;" class="btn btn-large" @click="orderSubmit"
-              >去结算</a
-            >
+            <a href="javascript:;" class="btn btn-large" @click="orderSubmit">去结算</a>
           </div>
         </div>
       </div>
@@ -180,40 +172,25 @@
           <div class="item">
             <select name="province" v-model="checkedItem.receiverProvince">
               <option disabled selected>Select your province</option>
-              <option
-                v-for="(item, index) in address"
-                :key="index"
-                :value="item.name"
-              >
+              <option v-for="(item, index) in address" :key="index" :value="item.name">
                 {{ item.name }}
               </option>
             </select>
             <select name="city" v-model="checkedItem.receiverCity">
               <option disabled selected>Select your city</option>
-              <option
-                v-for="(item, index) in city"
-                :key="index"
-                :value="item.name"
-              >
+              <option v-for="(item, index) in city" :key="index" :value="item.name">
                 {{ item.name }}
               </option>
             </select>
             <select name="district" v-model="checkedItem.receiverDistrict">
               <option disabled selected>Select your district</option>
-              <option
-                v-for="(item, index) in district"
-                :key="index"
-                :value="item.name"
-              >
+              <option v-for="(item, index) in district" :key="index" :value="item.name">
                 {{ item.name }}
               </option>
             </select>
           </div>
           <div class="item">
-            <textarea
-              name="street"
-              v-model="checkedItem.receiverAddress"
-            ></textarea>
+            <textarea name="street" v-model="checkedItem.receiverAddress"></textarea>
           </div>
           <div class="item">
             <input
@@ -240,9 +217,10 @@
   </div>
 </template>
 <script>
+import api from "../api/index";
 import Modal from "../components/Modal.vue";
 import address from "../util/address.js";
-import OrderHeader from './../components/OrderHeader'
+import OrderHeader from "./../components/OrderHeader";
 export default {
   name: "order-confirm",
   components: {
@@ -325,20 +303,20 @@ export default {
     },
   },
   mounted() {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
     console.log(this.address);
     this.getAddressList();
     this.getCartList();
   },
   methods: {
     getAddressList() {
-      this.axios.get("/shippings").then((res) => {
+      this.axios.get(api.AddressList).then((res) => {
         this.list = res.list;
         console.log(res.list);
       });
     },
     getCartList() {
-      this.axios.get("/carts").then((res) => {
+      this.axios.get(api.cart).then((res) => {
         let list = res.cartProductVoList; //获取购物车中所有商品数据
         this.cartTotalPrice = res.cartTotalPrice; //商品总金额
         this.cartList = list.filter((item) => item.productSelected);
@@ -435,7 +413,7 @@ export default {
         return;
       }
       this.axios
-        .post("/orders", {
+        .post(api.orders, {
           shippingId: item.id,
         })
         .then((res) => {

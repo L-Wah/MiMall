@@ -9,18 +9,10 @@
       <div class="container clearfix">
         <div class="swiper">
           <swiper :options="swiperOption">
-            <swiper-slide
-              ><img src="/imgs/detail/phone-1.jpg" alt=""
-            /></swiper-slide>
-            <swiper-slide
-              ><img src="/imgs/detail/phone-2.jpg" alt=""
-            /></swiper-slide>
-            <swiper-slide
-              ><img src="/imgs/detail/phone-3.jpg" alt=""
-            /></swiper-slide>
-            <swiper-slide
-              ><img src="/imgs/detail/phone-4.jpg" alt=""
-            /></swiper-slide>
+            <swiper-slide><img src="/imgs/detail/phone-1.jpg" alt="" /></swiper-slide>
+            <swiper-slide><img src="/imgs/detail/phone-2.jpg" alt="" /></swiper-slide>
+            <swiper-slide><img src="/imgs/detail/phone-3.jpg" alt="" /></swiper-slide>
+            <swiper-slide><img src="/imgs/detail/phone-4.jpg" alt="" /></swiper-slide>
             <!-- Optional controls -->
             <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
@@ -28,8 +20,8 @@
         <div class="content">
           <h2 class="item-title">{{ product.name }}</h2>
           <p class="item-info">
-            相机全新升级 / 960帧超慢动作 / 手持超级夜景 / 全球首款双频GPS /
-            骁龙845处理器 / 红<br />外人脸解锁 / AI变焦双摄 / 三星 AMOLED 屏
+            相机全新升级 / 960帧超慢动作 / 手持超级夜景 / 全球首款双频GPS / 骁龙845处理器
+            / 红<br />外人脸解锁 / AI变焦双摄 / 三星 AMOLED 屏
           </p>
           <div class="delivery">小米自营</div>
           <div class="item-price">
@@ -43,18 +35,10 @@
           </div>
           <div class="item-version clearfix">
             <h2>选择版本</h2>
-            <div
-              class="phone fl"
-              :class="{ checked: version == 1 }"
-              @click="version = 1"
-            >
+            <div class="phone fl" :class="{ checked: version == 1 }" @click="version = 1">
               6GB+64GB 全网通
             </div>
-            <div
-              class="phone fr"
-              :class="{ checked: version == 2 }"
-              @click="version = 2"
-            >
+            <div class="phone fr" :class="{ checked: version == 2 }" @click="version = 2">
               4GB+64GB 移动4G
             </div>
           </div>
@@ -69,9 +53,7 @@
             <div class="phone-info clearfix">
               <div class="fl">
                 {{ product.name }}
-                {{
-                  version == 1 ? "6GB+64GB 全网通" : "4GB+64GB 移动4G"
-                }}
+                {{ version == 1 ? "6GB+64GB 全网通" : "4GB+64GB 移动4G" }}
                 深灰色
               </div>
               <div class="fr">{{ product.price }}元</div>
@@ -79,9 +61,7 @@
             <div class="phone-total">总计：{{ product.price }}元</div>
           </div>
           <div class="btn-group">
-            <a href="javascript:;" class="btn btn-huge fl" @click="addCart"
-              >加入购物车</a
-            >
+            <a href="javascript:;" class="btn btn-huge fl" @click="addCart">加入购物车</a>
           </div>
         </div>
       </div>
@@ -98,6 +78,7 @@
   </div>
 </template>
 <script>
+import api from "../api/index";
 // 吸顶
 import ProductParam from "./../components/ProductParam.vue";
 // 视频遮罩
@@ -105,11 +86,11 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 import ServiceBar from "./../components/ServiceBar";
 export default {
   name: "detail",
-  components:{
+  components: {
     swiper,
     swiperSlide,
     ProductParam,
-    ServiceBar
+    ServiceBar,
   },
   data() {
     return {
@@ -127,19 +108,19 @@ export default {
     };
   },
   mounted() {
-    window.scroll(0, 0)
+    window.scroll(0, 0);
     this.getProductInfo();
   },
   methods: {
     getProductInfo() {
-      this.axios.get(`/products/${this.id}`).then((res) => {
+      this.axios.get(`${api.products}/${this.id}`).then((res) => {
         console.log(res);
         this.product = res;
       });
     },
     addCart() {
       this.axios
-        .post("/carts", {
+        .post(api.cart, {
           productId: this.id,
           selected: true,
         })

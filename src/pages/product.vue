@@ -28,21 +28,11 @@
       <div class="item-bg-3"></div>
       <div class="item-swiper">
         <swiper :options="swiperOption">
-          <swiper-slide
-            ><img src="/imgs/product/gallery-2.png" alt=""
-          /></swiper-slide>
-          <swiper-slide
-            ><img src="/imgs/product/gallery-3.png" alt=""
-          /></swiper-slide>
-          <swiper-slide
-            ><img src="/imgs/product/gallery-4.png" alt=""
-          /></swiper-slide>
-          <swiper-slide
-            ><img src="/imgs/product/gallery-5.jpg" alt=""
-          /></swiper-slide>
-          <swiper-slide
-            ><img src="/imgs/product/gallery-6.jpg" alt=""
-          /></swiper-slide>
+          <swiper-slide><img src="/imgs/product/gallery-2.png" alt="" /></swiper-slide>
+          <swiper-slide><img src="/imgs/product/gallery-3.png" alt="" /></swiper-slide>
+          <swiper-slide><img src="/imgs/product/gallery-4.png" alt="" /></swiper-slide>
+          <swiper-slide><img src="/imgs/product/gallery-5.jpg" alt="" /></swiper-slide>
+          <swiper-slide><img src="/imgs/product/gallery-6.jpg" alt="" /></swiper-slide>
           <!-- Optional controls -->
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -59,11 +49,7 @@
           <div class="overlay"></div>
           <div class="video" :class="showSlide">
             <span class="icon-close" @click="closeVideo"></span>
-            <video
-              ref="video"
-              src="/imgs/product/video.mp4"
-              controls="controls"
-            ></video>
+            <video ref="video" src="/imgs/product/video.mp4" controls="controls"></video>
           </div>
         </div>
       </div>
@@ -71,6 +57,7 @@
   </div>
 </template>
 <script>
+import api from "../api/index";
 // 吸顶
 import ProductParam from "./../components/ProductParam.vue";
 // 视频遮罩
@@ -100,13 +87,13 @@ export default {
     };
   },
   mounted() {
-    window.scroll(0, 0)
+    window.scroll(0, 0);
     this.getProductInfo();
   },
   methods: {
     getProductInfo() {
       let id = this.$route.params.id;
-      this.axios.get(`/products/${id}`).then((res) => {
+      this.axios.get(`${api.orders}/${id}`).then((res) => {
         console.log(res);
         this.product = res;
       });

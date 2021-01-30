@@ -107,6 +107,7 @@
 </template>
 
 <script>
+import api from "../api/index";
 import ServiceBar from "../components/ServiceBar.vue";
 import Modal from "../components/Modal.vue";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
@@ -219,7 +220,7 @@ export default {
   methods: {
     init() {
       this.axios
-        .get("/products", {
+        .get(api.products, {
           params: {
             categoryId: 100012,
             pageSize: 24,
@@ -233,7 +234,7 @@ export default {
     addcart(id) {
       // this.showModal = true;
       this.axios
-        .post("/carts", {
+        .post(api.cart, {
           productId: id,
           selected: true,
         })
