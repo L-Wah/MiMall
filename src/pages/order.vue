@@ -3,8 +3,8 @@
     <!-- <order-header :title="title">
       <template v-slot:tip>
         <span>{{ tip }}</span>
-      </template> -->
-    </order-header>
+      </template>
+    </order-header> -->
     <router-view></router-view>
     <service-bar></service-bar>
     <nav-footer></nav-footer>
